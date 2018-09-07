@@ -21,8 +21,9 @@ repositories {
 
 // project dependencies
 dependencies {
-    implementation 'com.imsweb:validation:1.20'
+    implementation 'com.imsweb:validation:1.21'
     implementation 'com.imsweb:validation-edits-seer:018-05'
+    implementation 'com.imsweb:validation-edits-naaccr-translated:002-01'
     implementation 'com.imsweb:staging-algorithm-cs:02.05.50'
     implementation 'com.imsweb:staging-algorithm-tnm:1.9'
     implementation 'com.imsweb:staging-algorithm-eod-public:1.3'

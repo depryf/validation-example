@@ -31,7 +31,7 @@ import com.imsweb.validation.entities.RuleFailure;
 import com.imsweb.validation.entities.SimpleNaaccrLinesValidatable;
 import com.imsweb.validation.functions.StagingContextFunctions;
 
-public final class Demo {
+public final class DemoSeerEdits {
 
     public static void main(String[] args) throws Exception {
 
@@ -50,7 +50,7 @@ public final class Demo {
         ValidationEngine.initialize(XmlValidatorFactory.loadValidatorFromXml(url));
 
         // we will use this layout object to read the data file
-        NaaccrLayout layout = (NaaccrLayout)LayoutFactory.getLayout(LayoutFactory.LAYOUT_ID_NAACCR_16_INCIDENCE);
+        NaaccrLayout layout = (NaaccrLayout)LayoutFactory.getLayout(LayoutFactory.LAYOUT_ID_NAACCR_18_INCIDENCE);
 
         // and finally, run the edits and display some counts
         long start = System.currentTimeMillis();
