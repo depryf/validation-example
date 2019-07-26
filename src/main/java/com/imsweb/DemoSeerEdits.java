@@ -24,13 +24,23 @@ import com.imsweb.staging.eod.EodDataProvider;
 import com.imsweb.staging.eod.EodDataProvider.EodVersion;
 import com.imsweb.staging.tnm.TnmDataProvider;
 import com.imsweb.staging.tnm.TnmDataProvider.TnmVersion;
+import com.imsweb.validation.ValidationContextFunctions;
 import com.imsweb.validation.ValidationEngine;
-import com.imsweb.validation.ValidatorContextFunctions;
-import com.imsweb.validation.XmlValidatorFactory;
+import com.imsweb.validation.ValidationXmlUtils;
+import com.imsweb.validation.edits.seer.SeerRuntimeEdits;
 import com.imsweb.validation.entities.RuleFailure;
 import com.imsweb.validation.entities.SimpleNaaccrLinesValidatable;
 import com.imsweb.validation.functions.StagingContextFunctions;
 
+/**
+ * This simple demo shows how to run SEER edits on a given data file.
+ * <br/><br/>
+ * A production environment should absolutely multi-thread the execution of the edits
+ * or the validating a large data file will feel painfully slow.
+ * <br/><br/>
+ * The engine itself is not multi-threaded internally but is is thread-safe, meaning
+ * the calls to the validate() methods can be done in a multi-threaded environment.
+ */
 public final class DemoSeerEdits {
 
     public static void main(String[] args) throws Exception {
@@ -41,13 +51,10 @@ public final class DemoSeerEdits {
         Staging csStaging = Staging.getInstance(CsDataProvider.getInstance(CsVersion.LATEST));
         Staging tnmStaging = Staging.getInstance(TnmDataProvider.getInstance(TnmVersion.LATEST));
         Staging eodStaging = Staging.getInstance(EodDataProvider.getInstance(EodVersion.LATEST));
-        ValidatorContextFunctions.initialize(new StagingContextFunctions(csStaging, tnmStaging, eodStaging));
+        ValidationContextFunctions.initialize(new StagingContextFunctions(csStaging, tnmStaging, eodStaging));
 
         // load the SEER edits and initialize the validation engine
-        URL url = Thread.currentThread().getContextClassLoader().getResource("edits/seer-edits.xml");
-        if (url == null)
-            throw new RuntimeException("Unable to find SEER edits");
-        ValidationEngine.initialize(XmlValidatorFactory.loadValidatorFromXml(url));
+        ValidationEngine.getInstance().initialize(SeerRuntimeEdits.loadValidator());
 
         // we will use this layout object to read the data file
         NaaccrLayout layout = (NaaccrLayout)LayoutFactory.getLayout(LayoutFactory.LAYOUT_ID_NAACCR_18_INCIDENCE);
@@ -60,7 +67,7 @@ public final class DemoSeerEdits {
             Map<String, String> rec = layout.readNextRecord(reader);
             while (rec != null) {
                 recCount.getAndIncrement();
-                Collection<RuleFailure> failures = ValidationEngine.validate(new SimpleNaaccrLinesValidatable(Collections.singletonList(rec)));
+                Collection<RuleFailure> failures = ValidationEngine.getInstance().validate(new SimpleNaaccrLinesValidatable(Collections.singletonList(rec)));
                 failuresCount.addAndGet(failures.size());
                 rec = layout.readNextRecord(reader);
             }

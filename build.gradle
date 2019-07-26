@@ -21,13 +21,13 @@ repositories {
 
 // project dependencies
 dependencies {
-    implementation 'com.imsweb:validation:1.23'
-    implementation 'com.imsweb:validation-edits-seer:018-05'
-    implementation 'com.imsweb:validation-edits-naaccr-translated:002-02'
-    implementation 'com.imsweb:staging-algorithm-cs:02.05.50'
-    implementation 'com.imsweb:staging-algorithm-tnm:1.9'
-    implementation 'com.imsweb:staging-algorithm-eod-public:1.3'
-    implementation 'com.imsweb:layout:1.12'
+    implementation 'com.imsweb:validation:2.8'
+    implementation 'com.imsweb:validation-edits-seer:019-02'
+    implementation 'com.imsweb:validation-edits-naaccr-translated:005-01'
+    implementation 'com.imsweb:staging-algorithm-cs:02.05.50.3'
+    implementation 'com.imsweb:staging-algorithm-tnm:1.9.2'
+    implementation 'com.imsweb:staging-algorithm-eod-public:1.6.1'
+    implementation 'com.imsweb:layout:1.21'
 }
 
 // enforce UTF-8, display the compilation warnings
@@ -45,7 +45,7 @@ tasks.withType(Javadoc) {
 jar {
     manifest {
         attributes('Implementation-Title': project.name,
-                'Implementation-Version': version,
+                'Implementation-Version': project.version,
                 'Implementation-Vendor': 'Information Management Services Inc.',
                 'Created-By': System.properties['java.vm.version'] + ' (' + System.properties['java.vm.vendor'] + ')',
                 'Built-By': System.getProperty('user.name'),
@@ -57,7 +57,9 @@ jar {
 
 // Gradle wrapper, this allows to build the project without having to install Gradle...
 wrapper {
-    gradleVersion = '4.9'
+    gradleVersion = '5.5.1'
+    distributionType = Wrapper.DistributionType.ALL
 }
+
 
 
